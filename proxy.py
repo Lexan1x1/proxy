@@ -1,15 +1,9 @@
-# -*- coding: utf-8 -*-
-# author Dinar Ahmetshin 
-# site https://ahmetshin.com
 import sys 
 import os
 
 def main():
     username="userproxy"
-    try:
-        password_proxy =raw_input("type your password here: ")
-    except:
-        password_proxy =input("type your password here: ")
+    password_proxy="root"
     os.system("apt-get update")
     os.system("apt-get -y install build-essential libwrap0-dev libpam0g-dev libkrb5-dev libsasl2-dev")
     os.system("wget --no-check-certificate https://ahmetshin.com/static/dante.tgz")
