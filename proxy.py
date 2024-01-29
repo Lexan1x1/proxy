@@ -14,7 +14,7 @@ def main():
     os.system("""cd dante && ./configure --prefix=/home/dante && make && make install""")
     os.system("""
             echo '
-            logoutput: syslog /var/log/danted.log
+            logoutput: stderr
             internal: eth0 port = 1080
             external: eth0
              
@@ -35,13 +35,11 @@ def main():
             }' > /home/dante/danted.conf
                 """)
     os.system("useradd --shell /usr/sbin/nologin -m %s" % username)
-    os.system('echo "%s:%s" | chpasswd' % (username,password_proxy))
     os.system("apt-get -y install ufw")
     os.system("ufw status")
     os.system("ufw allow ssh")
     os.system("ufw allow proto tcp from any to any port 1080")
     os.system("ufw status numbered")
-    os.system("echo 'y' | ufw enable")
     os.system("""
 echo '#!/bin/sh -e
 sleep 20
@@ -52,14 +50,6 @@ exit 0
     os.system("chmod +x /etc/rc.local")
     os.system("chmod +x /home/dante/sbin/sockd")
     os.system("/home/dante/sbin/sockd -f /home/dante/danted.conf -D")
-    os.system("echo 'proxy install success'")
-    os.system("echo ' '")
-    os.system("echo '________________________________'")
-    os.system("echo ' '")
-    os.system("echo \"YOUR IP ADDRESS: `hostname -I | awk '{print $1}'`\"")
-    os.system("echo 'PORT: 1080'")
-    os.system("echo 'LOGIN: %s'" % username)
-    os.system("echo 'PASSWORD: %s'" % password_proxy)
 
 if __name__ == "__main__":
     main()
